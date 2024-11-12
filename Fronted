@@ -1,0 +1,32 @@
+import React, { useState } from 'react';
+import axios from 'axios';
+
+function App() {
+  const [symptoms, setSymptoms] = useState('');
+  const [diagnosis, setDiagnosis] = useState('');
+
+  const handleConsultation = async () => {
+    const response = await axios.post('http://localhost:5000/api/consultation', {});
+    alert(`Consultation started with session ID: ${response.data.sessionId}`);
+  };
+
+  const handleDiagnosis = async () => {
+    const response = await axios.post('http://localhost:5000/api/diagnose', { symptoms: symptoms.split(',') });
+    setDiagnosis(response.data.diagnosis);
+  };
+
+  return (
+    <div>
+      <h1>TeleMedEdge Platform</h1>
+      <button onClick={handleConsultation}>Start Consultation</button>
+      <div>
+        <h2>Enter Symptoms:</h2>
+        <input type="text" value={symptoms} onChange={(e) => setSymptoms(e.target.value)} />
+        <button onClick={handleDiagnosis}>Get Diagnosis</button>
+        {diagnosis && <p>Diagnosis: {diagnosis}</p>}
+      </div>
+    </div>
+  );
+}
+
+export default App;
