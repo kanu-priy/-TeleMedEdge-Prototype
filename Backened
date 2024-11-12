@@ -1,0 +1,36 @@
+const express = require('express');
+const app = express();
+const cors = require('cors');
+const bodyParser = require('body-parser');
+require('dotenv').config();
+
+app.use(cors());
+app.use(bodyParser.json());
+
+app.get('/', (req, res) => {
+  res.send('TeleMedEdge API is running');
+});
+
+// Example endpoint for video consultation session
+app.post('/api/consultation', (req, res) => {
+  // Logic to initialize a video call session
+  res.json({ sessionId: '12345', token: 'sampleToken' });
+});
+
+app.post('/api/diagnose', (req, res) => {
+  const symptoms = req.body.symptoms;
+  // Call the AI diagnostic function
+  const diagnosis = diagnoseSymptoms(symptoms);
+  res.json({ diagnosis });
+});
+
+function diagnoseSymptoms(symptoms) {
+  // Dummy AI function to return a diagnosis based on symptoms
+  if (symptoms.includes('cough')) {
+    return 'Common cold';
+  }
+  return 'Diagnosis not available';
+}
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
